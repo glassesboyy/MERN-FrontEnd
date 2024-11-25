@@ -14,7 +14,7 @@ const MainApp = () => {
               to="home"
               className="hover:text-white transition duration-300"
             >
-              Movie Zul
+              MovieZul
             </Link>
           </h1>
           <nav className="flex items-center space-x-6">

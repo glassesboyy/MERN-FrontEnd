@@ -54,6 +54,7 @@ const Button = ({
     ${width}
     ${margin}
     ${radius}
+    ${textColor}
     text-center
     transition-all
     duration-300
