@@ -21,12 +21,6 @@ const Button = ({
     green: `bg-green-500 border hover:bg-green-600 text-white hover:bg-white/5 transition-all duration-300 hover:shadow-lg hover:shadow-green-900 hover:border border-green-900`,
     yellow: `bg-yellow-500 border hover:bg-yellow-600 text-black hover:bg-white/5 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-900 hover:border border-yellow-900`,
     purple: `bg-purple-500 border hover:bg-purple-600 text-white hover:bg-white/5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-900 hover:border border-purple-900`,
-    orange: `bg-orange-500 border hover:bg-orange-600 text-white hover:bg-white/5 transition-all duration-300 hover:shadow-lg hover:shadow-orange-900 hover:border border-orange-900`,
-    teal: `bg-teal-500 border hover:bg-teal-600 text-white hover:bg-white/5 transition-all duration-300 hover:shadow-lg hover:shadow-teal-900 hover:border border-teal-900`,
-    pink: `bg-pink-500 border hover:bg-pink-600 text-white hover:bg-white/5 transition-all duration-300 hover:shadow-lg hover:shadow-pink-900 hover:border border-pink-900`,
-    brown: `bg-brown-500 border hover:bg-brown-600 text-white hover:bg-white/5 transition-all duration-300 hover:shadow-lg hover:shadow-brown-900 hover:border border-brown-900`,
-    cyan: `bg-cyan-500 border hover:bg-cyan-600 text-white hover:bg-white/5 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-900 hover:border border-cyan-900`,
-    lime: `bg-lime-500 border hover:bg-lime-600 text-black hover:bg-white/5 transition-all duration-300 hover:shadow-lg hover:shadow-lime-900 hover:border border-lime-900`,
     glassmorphism: `
       bg-white/15
       backdrop-blur-lg
@@ -79,13 +73,14 @@ Button.propTypes = {
   children: PropTypes.node.isRequired,
   type: PropTypes.oneOf(["button", "submit", "reset"]),
   variant: PropTypes.oneOf([
-    "primary",
-    "secondary",
-    "danger",
-    "success",
-    "warning",
+    "blue",
+    "grey",
+    "red",
+    "green",
+    "yellow",
     "glassmorphism",
     "outline",
+    "purple",
   ]),
   textColor: PropTypes.string,
   height: PropTypes.string,

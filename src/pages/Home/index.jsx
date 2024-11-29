@@ -1,39 +1,22 @@
+import Axios from "axios";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, MovieItem } from "../../components";
 import { HeaderHome } from "../../components/templates";
 
 const Home = () => {
-  const movies = [
-    {
-      title: "Godzilla Minus One",
-      description:
-        "Setelah Jepang kalah dalam Perang Dunia II, Godzilla muncul sebagai ancaman besar yang menghancurkan negara yang sudah hancur. Sebuah perjuangan epik untuk bertahan hidup dimulai.",
-      imageUrl:
-        "https://www.movieposters.com/cdn/shop/files/godzilla2_480x.progressive.jpg?v=1729789153",
-    },
-    {
-      title: "Blade Trinity",
-      description:
-        "Blade bergabung dengan tim pemburu vampir untuk menghadapi musuh terbesarnya, Dracula, dalam pertarungan epik untuk menyelamatkan umat manusia dari dominasi vampir.",
-      imageUrl:
-        "https://www.movieposters.com/cdn/shop/products/4425fc6f2ac17eb310afa66abe71690b_7edc2fb1-ab7a-4a92-9b6e-778d06bb4bb9_480x.progressive.jpg?v=1573590396",
-    },
-    {
-      title: "The Lord of The Rings",
-      description:
-        "Frodo Baggins memulai perjalanan berbahaya untuk menghancurkan Cincin Kekuasaan, dengan bantuan Fellowship yang melindunginya dari kekuatan jahat Sauron.",
-      imageUrl:
-        "https://www.movieposters.com/cdn/shop/files/ItemR81771_jpg_480x.progressive.jpg?v=1694023916",
-    },
-    {
-      title: "Avatar",
-      description:
-        "Seorang mantan marinir dikirim ke dunia Pandora dan harus memilih antara melindungi penduduk asli planet tersebut atau mengikuti perintah misinya yang menghancurkan.",
-      imageUrl:
-        "https://www.movieposters.com/cdn/shop/files/avatar.adv.24x36_480x.progressive.jpg?v=1707410703",
-    },
-  ];
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    Axios.get("http://localhost:4000/v1/movie/posts")
+      .then((result) => {
+        console.log("Data Api: ", result.data.data);
+        setMovies(result.data.data);
+      })
+      .catch((error) => {
+        console.log("Error Api: ", error);
+      });
+  }, []);
 
   return (
     <div>
@@ -60,14 +43,14 @@ const Home = () => {
         <div className="flex flex-wrap justify-center">
           {movies.map((movie, index) => (
             <motion.div
-              key={index}
+              key={movie._id}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
             >
               <MovieItem
                 title={movie.title}
-                imageUrl={movie.imageUrl}
+                imageUrl={`http://localhost:4000/${movie.image}`}
                 description={movie.description}
                 margin="m-2"
                 width="w-72"

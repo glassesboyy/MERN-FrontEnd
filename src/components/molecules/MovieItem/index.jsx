@@ -4,7 +4,7 @@ import { Button } from "../../atoms";
 
 const MovieItem = ({
   title,
-  imageUrl,
+  imageUrl = "",
   description,
   margin = "m-2",
   width = "w-72",
