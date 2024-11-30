@@ -1,22 +1,27 @@
 import Axios from "axios";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
 import { Button, MovieItem } from "../../components";
 import { HeaderHome } from "../../components/templates";
 
 const Home = () => {
-  const [movies, setMovies] = useState([]);
+  const dispatch = useDispatch();
+  // Mengambil data movies dari state Redux
+  const movies = useSelector((state) => state.movies.movies);
 
   useEffect(() => {
-    Axios.get("http://localhost:4000/v1/movie/posts")
+    Axios.get("http://localhost:4000/v1/movie/posts?page=1&limit=4")
       .then((result) => {
         console.log("Data Api: ", result.data.data);
-        setMovies(result.data.data);
+        // Mengirim data yang diterima dari API ke Redux
+        dispatch({ type: "SET_MOVIES", payload: result.data.data });
       })
       .catch((error) => {
         console.log("Error Api: ", error);
       });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
@@ -52,6 +57,8 @@ const Home = () => {
                 title={movie.title}
                 imageUrl={`http://localhost:4000/${movie.image}`}
                 description={movie.description}
+                genre={movie.genre}
+                year={movie.year}
                 margin="m-2"
                 width="w-72"
                 height="h-auto"

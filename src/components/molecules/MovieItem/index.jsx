@@ -6,6 +6,8 @@ const MovieItem = ({
   title,
   imageUrl = "",
   description,
+  genre,
+  year,
   margin = "m-2",
   width = "w-72",
   height = "h-auto",
@@ -27,7 +29,7 @@ const MovieItem = ({
         group
       `}
     >
-      <div className="relative cursor-pointer ">
+      <div className="relative cursor-pointer">
         <img
           src={imageUrl}
           alt={title}
@@ -43,7 +45,16 @@ const MovieItem = ({
             {description}
           </p>
 
-          <div className="flex justify-end mt-2">
+          <div className="flex flex-wrap text-xs font-semibold text-white text-opacity-80 mt-2">
+            <span className="mr-4 bg-black border border-gray-700 rounded-2xl px-3 py-1">
+              {genre}
+            </span>
+          </div>
+          <div className="flex flex-wrap text-sm text-white mt-2">
+            <span>{year}</span>
+          </div>
+
+          <div className="flex justify-end mt-4">
             <Button to="/detail-movie" variant="glassmorphism" width="w-32">
               Detail
             </Button>
@@ -61,6 +72,8 @@ MovieItem.propTypes = {
   title: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  genre: PropTypes.string.isRequired,
+  year: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   margin: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string,
