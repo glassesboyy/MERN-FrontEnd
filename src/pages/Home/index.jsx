@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
 import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, MovieItem } from "../../components";
 import { HeaderHome } from "../../components/templates";
 import { setMovies } from "../../config/redux/actions";
@@ -9,9 +8,25 @@ import { setMovies } from "../../config/redux/actions";
 const Home = () => {
   const dispatch = useDispatch();
   const movies = useSelector((state) => state.movies.movies);
+  const totalPages = useSelector((state) => state.movies.totalPages);
+  const currentPage = useSelector((state) => state.movies.currentPage);
+  const limit = useSelector((state) => state.movies.limit);
+
   useEffect(() => {
-    dispatch(setMovies());
-  }, [dispatch]);
+    dispatch(setMovies(currentPage));
+  }, [dispatch, currentPage]);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      dispatch(setMovies(currentPage + 1));
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      dispatch(setMovies(currentPage - 1));
+    }
+  };
 
   return (
     <div>
@@ -57,16 +72,14 @@ const Home = () => {
           ))}
         </div>
 
-        <div className="w-full flex justify-between mt-4">
-          <Button
-            variant="glassmorphism"
-            width="w-32"
-            margin="ml-10"
-            className="hidden"
-          >
+        <div className="w-full flex justify-center items-center gap-4 mt-4">
+          <Button variant="glassmorphism" width="w-32" onClick={handlePrevPage}>
             Previous
           </Button>
-          <Button variant="glassmorphism" width="w-32" margin="mr-10">
+          <span className="text-lg">
+            Page {currentPage} of {totalPages}
+          </span>
+          <Button variant="glassmorphism" width="w-32" onClick={handleNextPage}>
             Next
           </Button>
         </div>
