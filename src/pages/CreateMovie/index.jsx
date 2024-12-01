@@ -37,9 +37,33 @@ const CreateMovie = () => {
                 className="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
+            <div className="mb-6 flex gap-4">
+              <div>
+                <Label htmlFor="genre" textColor="text-white">
+                  Genre
+                </Label>
+                <Input
+                  type="text"
+                  name="genre"
+                  placeholder="Enter movie genre"
+                  className="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div>
+                <Label htmlFor="year" textColor="text-white">
+                  Year
+                </Label>
+                <Input
+                  type="number"
+                  name="year"
+                  placeholder="Enter movie year"
+                  className="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+            </div>
             <div className="mb-6">
               <Label htmlFor="image" textColor="text-white">
-                Image
+                Poster Image
               </Label>
               <Input
                 type="file"
