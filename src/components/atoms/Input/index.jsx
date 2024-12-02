@@ -6,13 +6,15 @@ const Input = ({
   placeholder = "",
   margin = "my-2",
   textSize = "text-base",
+  ...props
 }) => {
   return (
     <input
       type={type}
       name={name}
       placeholder={placeholder}
-      className={`border p-2 rounded-md w-full ${margin} ${textSize} text-black`}
+      className={`border p-2 rounded-md w-full ${margin} ${textSize} text-black bg-white`}
+      {...props}
     />
   );
 };
