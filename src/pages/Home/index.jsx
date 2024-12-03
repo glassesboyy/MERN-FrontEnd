@@ -76,7 +76,7 @@ const Home = () => {
           <Button variant="glassmorphism" width="w-32" onClick={handlePrevPage}>
             Previous
           </Button>
-          <span className="text-lg">
+          <span className="text-xs font-semibold md:text-lg text-white">
             Page {currentPage} of {totalPages}
           </span>
           <Button variant="glassmorphism" width="w-32" onClick={handleNextPage}>

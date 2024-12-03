@@ -1,20 +1,24 @@
 import axios from "axios";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useState } from "react";
 import { Button, Input, Label, Upload } from "../../components";
 
 const CreateMovie = () => {
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [genre, setGenre] = React.useState("");
-  const [imageUrl, setImageUrl] = React.useState("");
-  const [year, setYear] = React.useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [genre, setGenre] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [year, setYear] = useState("");
+  const [notification, setNotification] = useState({ message: "", type: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!title || !description || !genre || !year || !imageUrl) {
-      alert("Semua field harus diisi!");
+      setNotification({
+        message: "Semua field harus diisi!",
+        type: "error",
+      });
       return;
     }
 
@@ -36,8 +40,10 @@ const CreateMovie = () => {
         }
       );
 
-      alert("Movie berhasil ditambahkan!");
-      console.log("Response:", response.data);
+      setNotification({
+        message: "Movie berhasil ditambahkan!",
+        type: "success",
+      });
 
       setTitle("");
       setDescription("");
@@ -45,8 +51,10 @@ const CreateMovie = () => {
       setYear("");
       setImageUrl(null);
     } catch (error) {
-      console.error("Error:", error);
-      alert("Terjadi kesalahan saat mengunggah data.");
+      setNotification({
+        message: "Terjadi kesalahan saat mengunggah data.",
+        type: "error",
+      });
     }
   };
 
@@ -61,6 +69,29 @@ const CreateMovie = () => {
           <h1 className="text-4xl text-center font-bold text-white mb-6">
             Create Movie Page
           </h1>
+
+          {notification.message && (
+            <div
+              className={`p-2 ${
+                notification.type === "success" ? "bg-indigo-800" : "bg-red-800"
+              } items-center text-indigo-100 leading-none rounded-full flex mb-6`}
+              role="alert"
+            >
+              <span
+                className={`flex rounded-full ${
+                  notification.type === "success"
+                    ? "bg-indigo-500"
+                    : "bg-red-500"
+                } uppercase px-2 py-1 text-xs font-bold mr-3`}
+              >
+                {notification.type === "success" ? "Success" : "Error"}
+              </span>
+              <span className="font-semibold mr-2 text-left flex-auto">
+                {notification.message}
+              </span>
+            </div>
+          )}
+
           <form>
             <div className="mb-6">
               <Label htmlFor="title" textColor="text-white">
