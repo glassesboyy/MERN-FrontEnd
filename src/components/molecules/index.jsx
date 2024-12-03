@@ -1,3 +1,5 @@
+import Footer from "./Footer";
 import MovieItem from "./MovieItem";
+import Navbar from "./Navbar";
 
-export { MovieItem };
+export { Footer, MovieItem, Navbar };
