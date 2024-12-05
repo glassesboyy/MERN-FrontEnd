@@ -1,6 +1,9 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Footer, Navbar } from "../../components/templates";
+import { Footer, Navbar } from "../../components";
+import CreateMovie from "../CreateMovie";
+import DetailMovie from "../DetailMovie";
+import Home from "../Home";
 
 const MainApp = () => {
   return (
@@ -15,5 +18,9 @@ const MainApp = () => {
     </div>
   );
 };
+
+MainApp.Home = Home;
+MainApp.CreateMovie = CreateMovie;
+MainApp.DetailMovie = DetailMovie;
 
 export default MainApp;
