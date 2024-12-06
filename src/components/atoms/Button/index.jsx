@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
-import React from "react";
 import { Link } from "react-router-dom";
 
-const Button = ({
+const Button2 = ({
   children,
   type = "button",
   variant = "primary",
@@ -69,7 +68,7 @@ const Button = ({
   );
 };
 
-Button.propTypes = {
+Button2.propTypes = {
   children: PropTypes.node.isRequired,
   type: PropTypes.oneOf(["button", "submit", "reset"]),
   variant: PropTypes.oneOf([
@@ -91,4 +90,4 @@ Button.propTypes = {
   to: PropTypes.string,
 };
 
-export default Button;
+export default Button2;
