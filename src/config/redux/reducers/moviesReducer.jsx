@@ -15,6 +15,23 @@ const moviesReducer = (state = initialState, action) => {
         currentPage: action.payload.currentPage,
         limit: action.payload.limit,
       };
+    case "ADD_MOVIE":
+      return {
+        ...state,
+        movies: [...state.movies, action.payload],
+      };
+    case "UPDATE_MOVIE":
+      return {
+        ...state,
+        movies: state.movies.map((movie) =>
+          movie.id === action.payload.id ? action.payload : movie
+        ),
+      };
+    case "DELETE_MOVIE":
+      return {
+        ...state,
+        movies: state.movies.filter((movie) => movie.id !== action.payload),
+      };
     default:
       return state;
   }
