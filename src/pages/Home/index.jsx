@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, MovieItem } from "../../components";
 import { HeaderHome } from "../../components/templates";
@@ -7,14 +7,14 @@ import { setMovies } from "../../config/redux/actions";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const movies = useSelector((state) => state.movies.movies);
-  const totalPages = useSelector((state) => state.movies.totalPages);
-  const currentPage = useSelector((state) => state.movies.currentPage);
-  const limit = useSelector((state) => state.movies.limit);
+  const { movies, totalPages, currentPage, limit, loading, error } =
+    useSelector((state) => state.movies);
 
   useEffect(() => {
     dispatch(setMovies(currentPage));
   }, [dispatch, currentPage]);
+
+  const memoizedMovies = useMemo(() => movies, [movies]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -27,6 +27,14 @@ const Home = () => {
       dispatch(setMovies(currentPage - 1));
     }
   };
+
+  if (loading) {
+    return <div className="text-center text-white mt-10">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500 mt-10">{error}</div>;
+  }
 
   return (
     <div>
@@ -51,7 +59,7 @@ const Home = () => {
         </div>
 
         <div className="flex flex-wrap justify-center">
-          {movies.map((movie, index) => (
+          {memoizedMovies.map((movie, index) => (
             <motion.div
               key={movie._id}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -59,6 +67,7 @@ const Home = () => {
               transition={{ duration: 0.4, delay: index * 0.1 }}
             >
               <MovieItem
+                id={movie._id}
                 title={movie.title}
                 imageUrl={`http://localhost:4000/${movie.image}`}
                 description={movie.description}

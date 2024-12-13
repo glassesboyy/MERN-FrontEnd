@@ -1,6 +1,6 @@
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, Input, Label, Upload } from "../../components";
 
 const CreateMovie = () => {

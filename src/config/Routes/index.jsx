@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Login, MainApp, Register } from "../../pages";
 
@@ -9,7 +8,7 @@ const AppRoutes = () => {
         <Route path="/" element={<MainApp />}>
           <Route path="home" element={<MainApp.Home />} />
           <Route path="create-movie" element={<MainApp.CreateMovie />} />
-          <Route path="detail-movie" element={<MainApp.DetailMovie />} />
+          <Route path="detail-movie/:id" element={<MainApp.DetailMovie />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

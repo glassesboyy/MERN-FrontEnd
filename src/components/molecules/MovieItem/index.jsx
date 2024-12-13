@@ -10,6 +10,7 @@ const MovieItem = ({
   margin = "m-2",
   width = "w-72",
   height = "h-auto",
+  id,
 }) => {
   return (
     <div
@@ -54,7 +55,11 @@ const MovieItem = ({
           </div>
 
           <div className="flex justify-end mt-4">
-            <Button to="/detail-movie" variant="glassmorphism" width="w-32">
+            <Button
+              to={`/detail-movie/${id}`}
+              variant="glassmorphism"
+              width="w-32"
+            >
               Detail
             </Button>
             <Button variant="red" width="w-32">
