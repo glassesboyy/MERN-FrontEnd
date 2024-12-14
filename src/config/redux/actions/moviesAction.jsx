@@ -79,16 +79,18 @@ export const deleteMovie = (id) => {
   return async (dispatch) => {
     try {
       dispatch({ type: "SET_LOADING" });
-      await Axios.delete(`http://localhost:4000/v1/movie/posts/${id}`);
+      await Axios.delete(`http://localhost:4000/v1/movie/post/${id}`); // Changed from posts to post
       dispatch({
         type: "DELETE_MOVIE",
         payload: id,
       });
+      return Promise.resolve(); // Add this to properly handle the async operation
     } catch (error) {
       dispatch({
         type: "SET_ERROR",
         payload: error.response?.data?.message || "Failed to delete movie",
       });
+      return Promise.reject(error); // Add this to properly handle errors
     }
   };
 };
@@ -99,13 +101,14 @@ export const getMovieById = (id) => {
     try {
       dispatch({ type: "SET_LOADING" });
       const result = await Axios.get(
-        `http://localhost:4000/v1/movie/posts/${id}`
+        `http://localhost:4000/v1/movie/post/${id}` // Changed from posts to post
       );
       dispatch({
         type: "SET_CURRENT_MOVIE",
         payload: result.data.data,
       });
     } catch (error) {
+      console.error("Error fetching movie:", error); // Add this for debugging
       dispatch({
         type: "SET_ERROR",
         payload:

@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "../../atoms";
 
 const HeaderHome = () => {
@@ -14,7 +13,7 @@ const HeaderHome = () => {
         <Button variant="purple" width="w-40">
           Subscribe
         </Button>
-        <Button variant="glassmorphism" width="w-20">
+        <Button to="/about" variant="glassmorphism" width="w-20">
           Explore
         </Button>
       </div>

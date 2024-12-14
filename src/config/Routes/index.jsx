@@ -1,5 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { Login, MainApp, Register } from "../../pages";
+import { About, Login, MainApp, Register } from "../../pages";
 
 const AppRoutes = () => {
   return (
@@ -12,6 +12,7 @@ const AppRoutes = () => {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/about" element={<About />} />
         <Route path="*" element={<h1>Mau Kemana si Anjing??</h1>} />
       </Routes>
     </Router>

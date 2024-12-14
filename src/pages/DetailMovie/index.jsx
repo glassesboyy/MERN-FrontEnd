@@ -1,17 +1,30 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components";
-import { getMovieById } from "../../config/redux/actions";
+import { deleteMovie, getMovieById } from "../../config/redux/actions";
 
 const DetailMovie = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentMovie, loading, error } = useSelector((state) => state.movies);
 
   useEffect(() => {
+    console.log("Fetching movie with ID:", id); // Add this for debugging
     dispatch(getMovieById(id));
   }, [dispatch, id]);
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to delete this movie?")) {
+      try {
+        await dispatch(deleteMovie(id));
+        navigate("/home");
+      } catch (error) {
+        console.error("Failed to delete movie:", error);
+      }
+    }
+  };
 
   if (loading) {
     return <div className="text-center text-white mt-10">Loading...</div>;
@@ -26,7 +39,7 @@ const DetailMovie = () => {
   }
 
   return (
-    <div className="p-6 font-sans flex flex-col md:flex-row gap-10 bg-black rounded-3xl p-10">
+    <div className="font-sans flex flex-col md:flex-row gap-10 bg-black rounded-3xl px-32">
       <img
         src={`http://localhost:4000/${currentMovie.image}`}
         alt={currentMovie.title}
@@ -51,6 +64,9 @@ const DetailMovie = () => {
         <div className="mt-16 flex justify-end">
           <Button to="/home" variant="glassmorphism" width="w-1/5">
             Back
+          </Button>
+          <Button variant="red" width="w-1/5" onClick={handleDelete}>
+            Delete
           </Button>
         </div>
       </div>
