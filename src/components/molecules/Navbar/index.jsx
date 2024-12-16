@@ -1,4 +1,10 @@
-import React from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -25,7 +31,78 @@ const Navbar = () => {
             MovieZul
           </Link>
         </h1>
-        <nav className="flex items-center space-x-6">
+
+        {/* Center dropdowns */}
+        <div className="flex-1 flex justify-center gap-6">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center hover:text-purple-300 transition duration-300">
+              Genres <ChevronDown className="ml-1 h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <Link to="/genre/action" className="w-full">
+                  Action
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/genre/comedy" className="w-full">
+                  Comedy
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/genre/drama" className="w-full">
+                  Drama
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/genre/horror" className="w-full">
+                  Horror
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/genre/romance" className="w-full">
+                  Romance
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center hover:text-purple-300 transition duration-300">
+              Years <ChevronDown className="ml-1 h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <Link to="/year/2024" className="w-full">
+                  2024
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/year/2023" className="w-full">
+                  2023
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/year/2022" className="w-full">
+                  2022
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/year/2021" className="w-full">
+                  2021
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/year/2020" className="w-full">
+                  2020
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        {/* Right-aligned login link */}
+        <nav>
           <Link
             to="login"
             className="hover:text-purple-300 hover:underline transition duration-300"
