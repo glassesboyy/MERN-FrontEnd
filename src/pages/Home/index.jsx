@@ -71,7 +71,7 @@ const Home = () => {
                 title={movie.title}
                 imageUrl={`http://localhost:4000/${movie.image}`}
                 description={movie.description}
-                genre={movie.genre}
+                genres={movie.genres} // Changed from genre to genres
                 year={movie.year}
                 margin="m-2"
                 width="w-72"

@@ -35,19 +35,36 @@ export const addMovie = (movieData) => {
   return async (dispatch) => {
     try {
       dispatch({ type: "SET_LOADING" });
+
       const result = await Axios.post(
-        "http://localhost:4000/v1/movie/posts",
-        movieData
+        "http://localhost:4000/v1/movie/post",
+        movieData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-      dispatch({
-        type: "ADD_MOVIE",
-        payload: result.data,
-      });
+
+      if (result.data && result.data.data) {
+        dispatch({
+          type: "ADD_MOVIE",
+          payload: result.data.data,
+        });
+        return Promise.resolve(result.data);
+      } else {
+        throw new Error("Invalid response format from server");
+      }
     } catch (error) {
+      console.error("Error creating movie:", error);
+      const errorMessage =
+        error.response?.data?.message || error.message || "Failed to add movie";
+
       dispatch({
         type: "SET_ERROR",
-        payload: error.response?.data?.message || "Failed to add movie",
+        payload: errorMessage,
       });
+      return Promise.reject(new Error(errorMessage));
     }
   };
 };
@@ -113,6 +130,25 @@ export const getMovieById = (id) => {
         type: "SET_ERROR",
         payload:
           error.response?.data?.message || "Failed to fetch movie details",
+      });
+    }
+  };
+};
+
+// Add this new action to fetch genres
+export const fetchGenres = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: "SET_LOADING" });
+      const result = await Axios.get("http://localhost:4000/v1/genre");
+      dispatch({
+        type: "SET_GENRES",
+        payload: result.data.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "SET_ERROR",
+        payload: error.response?.data?.message || "Failed to fetch genres",
       });
     }
   };

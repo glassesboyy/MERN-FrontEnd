@@ -6,6 +6,7 @@ const initialState = {
   limit: 8,
   loading: false,
   error: null,
+  genres: [], // Add this new state
 };
 
 const moviesReducer = (state = initialState, action) => {
@@ -53,6 +54,13 @@ const moviesReducer = (state = initialState, action) => {
       return {
         ...state,
         currentMovie: action.payload,
+        loading: false,
+        error: null,
+      };
+    case "SET_GENRES":
+      return {
+        ...state,
+        genres: action.payload,
         loading: false,
         error: null,
       };

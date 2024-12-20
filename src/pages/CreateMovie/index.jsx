@@ -1,58 +1,122 @@
-import axios from "axios";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import { ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Button, Input, Label, Upload } from "../../components";
+import { addMovie, fetchGenres } from "../../config/redux/actions";
 
 const CreateMovie = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [genre, setGenre] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [year, setYear] = useState("");
-  const [notification, setNotification] = useState({ message: "", type: "" });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { genres, loading, error } = useSelector((state) => state.movies);
+  const [notification, setNotification] = useState({ message: "", type: "" }); // Add notification state
+
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    genres: [],
+    year: "",
+    image: null,
+  });
+
+  const [selectedGenres, setSelectedGenres] = useState([]);
+
+  useEffect(() => {
+    dispatch(fetchGenres());
+  }, [dispatch]);
+
+  // Show error notification if there's an error from Redux state
+  useEffect(() => {
+    if (error) {
+      setNotification({ message: error, type: "error" });
+    }
+  }, [error]);
+
+  const handleChange = (e) => {
+    const { name, value, type, files } = e.target;
+    if (name === "fileUpload") {
+      // Changed from checking type to checking name
+      setForm({
+        ...form,
+        image: files[0],
+      });
+    } else if (name === "genres") {
+      // Handle multiple select
+      const selectedGenres = Array.from(
+        e.target.selectedOptions,
+        (option) => option.value
+      );
+      setForm({
+        ...form,
+        genres: selectedGenres,
+      });
+    } else {
+      setForm({
+        ...form,
+        [name]: value,
+      });
+    }
+  };
+
+  const handleGenreSelect = (genreId, genreName, checked) => {
+    setSelectedGenres((prev) => {
+      if (!checked) {
+        return prev.filter((g) => g.id !== genreId);
+      }
+      return [...prev, { id: genreId, name: genreName }];
+    });
+
+    setForm((prev) => ({
+      ...prev,
+      genres: checked
+        ? [...(prev.genres || []), genreId]
+        : (prev.genres || []).filter((id) => id !== genreId),
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !description || !genre || !year || !imageUrl) {
+    if (
+      !form.title ||
+      !form.description ||
+      !form.year ||
+      !form.image ||
+      form.genres.length === 0
+    ) {
       setNotification({
-        message: "Semua field harus diisi!",
+        message: "Please fill in all required fields",
         type: "error",
       });
       return;
     }
 
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("genre", genre);
-    formData.append("year", year);
-    formData.append("image", imageUrl);
+    formData.append("title", form.title);
+    formData.append("description", form.description);
+    formData.append("year", form.year);
+    formData.append("image", form.image);
+    formData.append("genres", JSON.stringify(form.genres));
 
     try {
-      const response = await axios.post(
-        "http://localhost:4000/v1/movie/post",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
+      const response = await dispatch(addMovie(formData));
       setNotification({
-        message: "Movie berhasil ditambahkan!",
+        message: "Movie created successfully!",
         type: "success",
       });
-
-      setTitle("");
-      setDescription("");
-      setGenre("");
-      setYear("");
-      setImageUrl(null);
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     } catch (error) {
       setNotification({
-        message: "Terjadi kesalahan saat mengunggah data.",
+        message: error.message || "Failed to create movie",
         type: "error",
       });
     }
@@ -92,79 +156,100 @@ const CreateMovie = () => {
             </div>
           )}
 
-          <form>
-            <div className="mb-6">
-              <Label htmlFor="title" textColor="text-white">
-                Title
-              </Label>
-              <Input
-                type="text"
-                name="title"
-                placeholder="Enter movie title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-            <div className="mb-6">
-              <Label htmlFor="description" textColor="text-white">
-                Description
-              </Label>
-              <Input
-                type="textarea"
-                name="description"
-                placeholder="Enter movie description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </div>
-            <div className="mb-6 flex gap-4">
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-4">
               <div>
-                <Label htmlFor="genre" textColor="text-white">
-                  Genre
+                <Label htmlFor="title" textColor="text-white">
+                  Title
                 </Label>
                 <Input
                   type="text"
-                  name="genre"
-                  placeholder="Enter movie genre"
-                  value={genre}
-                  onChange={(e) => setGenre(e.target.value)}
+                  name="title"
+                  placeholder="Enter movie title"
+                  value={form.title}
+                  onChange={handleChange}
                 />
               </div>
+
               <div>
-                <Label htmlFor="year" textColor="text-white">
-                  Year
+                <Label htmlFor="description" textColor="text-white">
+                  Description
                 </Label>
                 <Input
-                  type="number"
-                  name="year"
-                  placeholder="Enter movie year"
-                  value={year}
-                  onChange={(e) => setYear(e.target.value)}
+                  type="textarea"
+                  name="description"
+                  placeholder="Enter movie description"
+                  value={form.description}
+                  onChange={handleChange}
                 />
               </div>
-            </div>
-            <div className="mb-6">
-              <Label htmlFor="image" textColor="text-white">
-                Poster Image
-              </Label>
-              <Upload
-                name="fileUpload"
-                accept=".jpg,.png,"
-                onChange={(e) => setImageUrl(e.target.files[0])}
-              />
-            </div>
-            <div className="flex justify-end">
-              <Button
-                type="submit"
-                variant="purple"
-                width="w-full"
-                onClick={handleSubmit}
-              >
-                Create Movie
-              </Button>
-              <Button to="/home" variant="glassmorphism" width="w-1/2">
-                Kembali
-              </Button>
+
+              {/* Genres and Year side by side */}
+              <div className="flex gap-4">
+                <div className="w-1/2">
+                  <Label htmlFor="genres" textColor="text-white">
+                    Genres
+                  </Label>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="flex items-center justify-between w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg hover:bg-white/20 transition duration-300">
+                      <div className="truncate max-w-[100px]">
+                        {selectedGenres.length > 0
+                          ? selectedGenres.map((g) => g.name).join(", ")
+                          : "Select Genres"}
+                      </div>
+                      <ChevronDown className="ml-1 h-4 w-4 flex-shrink-0" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-full">
+                      {genres.map((genre) => (
+                        <DropdownMenuCheckboxItem
+                          key={genre._id}
+                          checked={selectedGenres.some(
+                            (g) => g.id === genre._id
+                          )}
+                          onCheckedChange={(checked) =>
+                            handleGenreSelect(genre._id, genre.name, checked)
+                          }
+                        >
+                          {genre.name}
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                <div className="w-1/2">
+                  <Label htmlFor="year" textColor="text-white">
+                    Year
+                  </Label>
+                  <Input
+                    type="number"
+                    name="year"
+                    placeholder="Enter movie year"
+                    value={form.year}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="image" textColor="text-white">
+                  Poster Image
+                </Label>
+                <Upload
+                  name="fileUpload"
+                  accept="image/*"
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="flex justify-end gap-4 pt-4">
+                <Button type="submit" variant="purple" width="w-full">
+                  Create Movie
+                </Button>
+                <Button to="/home" variant="glassmorphism" width="w-1/2">
+                  Kembali
+                </Button>
+              </div>
             </div>
           </form>
         </div>

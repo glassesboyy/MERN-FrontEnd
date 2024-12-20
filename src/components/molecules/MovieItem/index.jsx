@@ -8,7 +8,7 @@ const MovieItem = ({
   title,
   imageUrl = "",
   description,
-  genre,
+  genres, // Changed from genre to genres
   year,
   margin = "m-2",
   width = "w-72",
@@ -50,7 +50,7 @@ const MovieItem = ({
         <img
           src={imageUrl}
           alt={title}
-          className="w-full h-auto object-cover transition-opacity duration-500 group-hover:opacity-20"
+          className="w-auto h-full object-cover transition-opacity duration-500 group-hover:opacity-20"
         />
 
         <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -62,10 +62,15 @@ const MovieItem = ({
             {description}
           </p>
 
-          <div className="flex flex-wrap text-xs font-semibold text-white text-opacity-80 mt-2">
-            <span className="mr-4 bg-black border border-gray-700 rounded-2xl px-3 py-1">
-              {genre}
-            </span>
+          <div className="flex flex-wrap gap-2 text-xs font-semibold text-white text-opacity-80 mt-2">
+            {genres.map((genre) => (
+              <span
+                key={genre._id}
+                className="bg-black border border-gray-700 rounded-2xl px-3 py-1"
+              >
+                {genre.name}
+              </span>
+            ))}
           </div>
           <div className="flex flex-wrap text-sm text-white mt-2">
             <span>{year}</span>
@@ -93,11 +98,17 @@ MovieItem.propTypes = {
   title: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  genre: PropTypes.string.isRequired,
+  genres: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   year: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   margin: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string,
+  id: PropTypes.string.isRequired,
 };
 
 export default MovieItem;
