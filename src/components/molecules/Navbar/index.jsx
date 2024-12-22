@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,13 +5,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Search } from "lucide-react";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
+  fetchAllMovies,
   fetchGenres,
   setMovies,
-  fetchAllMovies,
 } from "../../../config/redux/actions";
 
 const Navbar = () => {
@@ -103,6 +102,12 @@ const Navbar = () => {
 
         {/* Center dropdowns */}
         <div className="flex gap-6">
+          <Link
+            to="about"
+            className="hover:text-purple-300 hover:underline transition duration-300"
+          >
+            About
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center hover:text-purple-300 transition duration-300">
               Genres <ChevronDown className="ml-1 h-4 w-4" />
@@ -113,7 +118,7 @@ const Navbar = () => {
                   key={genre._id}
                   onClick={() => handleGenreClick(genre._id)}
                 >
-                  {genre.name} ({genre.movies.length})
+                  {genre.name}
                 </DropdownMenuItem>
               ))}
               <DropdownMenuItem onClick={() => handleGenreClick(null)}>
