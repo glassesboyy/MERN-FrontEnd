@@ -1,7 +1,13 @@
 import Axios from "axios";
 
 // Action to set movies (Read)
-export const setMovies = (page = 1, genre = null, search = "", year = null) => {
+export const setMovies = (
+  page = 1,
+  genre = null,
+  search = "",
+  year = null,
+  productionSeries = null
+) => {
   return async (dispatch) => {
     try {
       dispatch({ type: "SET_LOADING" });
@@ -16,9 +22,13 @@ export const setMovies = (page = 1, genre = null, search = "", year = null) => {
       if (year) {
         url += `&year=${year}`;
       }
+      if (productionSeries) {
+        url += `&productionSeries=${productionSeries}`;
+      }
 
       const result = await Axios.get(url);
       const responseAPI = result.data;
+
       dispatch({
         type: "SET_MOVIES",
         payload: {
@@ -30,6 +40,7 @@ export const setMovies = (page = 1, genre = null, search = "", year = null) => {
           selectedGenre: genre,
           searchQuery: search,
           selectedYear: year,
+          selectedProductionSeries: productionSeries,
         },
       });
     } catch (error) {
@@ -48,6 +59,11 @@ export const addMovie = (movieData) => {
   return async (dispatch) => {
     try {
       dispatch({ type: "SET_LOADING" });
+
+      // Log the FormData contents for debugging
+      for (let pair of movieData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
 
       const result = await Axios.post(
         "http://localhost:4000/v1/movie/post",
@@ -70,6 +86,7 @@ export const addMovie = (movieData) => {
       }
     } catch (error) {
       console.error("Error creating movie:", error);
+      console.error("Error response:", error.response?.data); // Add this for debugging
       const errorMessage =
         error.response?.data?.message || error.message || "Failed to add movie";
 
@@ -180,6 +197,28 @@ export const fetchAllMovies = () => {
       });
     } catch (error) {
       console.error("Error fetching all movies:", error);
+    }
+  };
+};
+
+// Add this new action
+export const fetchProductionSeries = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: "SET_LOADING" });
+      const result = await Axios.get(
+        "http://localhost:4000/v1/production-series"
+      );
+      dispatch({
+        type: "SET_PRODUCTION_SERIES",
+        payload: result.data.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "SET_ERROR",
+        payload:
+          error.response?.data?.message || "Failed to fetch production series",
+      });
     }
   };
 };

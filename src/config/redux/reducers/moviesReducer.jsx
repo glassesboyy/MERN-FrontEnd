@@ -11,7 +11,9 @@ const initialState = {
   selectedGenre: null,
   searchQuery: "",
   selectedYear: null,
-  allMovies: [], // Add this new state
+  allMovies: [],
+  productionSeries: [],
+  selectedProductionSeries: null,
 };
 
 const moviesReducer = (state = initialState, action) => {
@@ -39,6 +41,7 @@ const moviesReducer = (state = initialState, action) => {
         selectedGenre: action.payload.selectedGenre,
         searchQuery: action.payload.searchQuery || "",
         selectedYear: action.payload.selectedYear,
+        selectedProductionSeries: action.payload.selectedProductionSeries,
         loading: false,
         error: null,
       };
@@ -77,6 +80,13 @@ const moviesReducer = (state = initialState, action) => {
       return {
         ...state,
         allMovies: action.payload,
+      };
+    case "SET_PRODUCTION_SERIES":
+      return {
+        ...state,
+        productionSeries: action.payload,
+        loading: false,
+        error: null,
       };
     default:
       return state;

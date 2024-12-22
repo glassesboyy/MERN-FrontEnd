@@ -12,12 +12,15 @@ import {
   fetchAllMovies,
   fetchGenres,
   setMovies,
+  fetchProductionSeries,
 } from "../../../config/redux/actions";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { genres, allMovies } = useSelector((state) => state.movies);
+  const { genres, allMovies, productionSeries } = useSelector(
+    (state) => state.movies
+  );
   const [searchQuery, setSearchQuery] = useState("");
 
   // Get unique years from ALL movies, not just filtered ones
@@ -31,9 +34,23 @@ const Navbar = () => {
     return genres.filter((genre) => genre.movies && genre.movies.length > 0);
   }, [genres]);
 
+  // Add this new memoized value after availableGenres
+  const availableProductionSeries = useMemo(() => {
+    // Get all unique production series IDs from movies
+    const usedSeriesIds = new Set(
+      allMovies
+        .filter((movie) => movie.productionSeries)
+        .map((movie) => movie.productionSeries._id)
+    );
+
+    // Filter production series to only include those that are used in movies
+    return productionSeries.filter((series) => usedSeriesIds.has(series._id));
+  }, [allMovies, productionSeries]);
+
   useEffect(() => {
     dispatch(fetchGenres());
     dispatch(fetchAllMovies()); // Add this
+    dispatch(fetchProductionSeries()); // Add this
   }, [dispatch]);
 
   const handleSearch = (e) => {
@@ -51,6 +68,12 @@ const Navbar = () => {
   const handleYearClick = (year) => {
     setSearchQuery(""); // Clear search when selecting year
     dispatch(setMovies(1, null, "", year));
+    navigate("/home");
+  };
+
+  const handleProductionSeriesClick = (seriesId) => {
+    setSearchQuery(""); // Clear search when selecting production series
+    dispatch(setMovies(1, null, "", null, seriesId));
     navigate("/home");
   };
 
@@ -142,6 +165,28 @@ const Navbar = () => {
               ))}
               <DropdownMenuItem onClick={() => handleYearClick(null)}>
                 All Years
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Add Production Series Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center hover:text-purple-300 transition duration-300">
+              Production Series <ChevronDown className="ml-1 h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {availableProductionSeries.map((series) => (
+                <DropdownMenuItem
+                  key={series._id}
+                  onClick={() => handleProductionSeriesClick(series._id)}
+                >
+                  {series.name}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuItem
+                onClick={() => handleProductionSeriesClick(null)}
+              >
+                All Series
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

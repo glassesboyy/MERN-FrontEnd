@@ -10,13 +10,21 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button, Input, Label, Upload } from "../../components";
-import { addMovie, fetchGenres } from "../../config/redux/actions";
+import {
+  addMovie,
+  fetchGenres,
+  fetchProductionSeries,
+} from "../../config/redux/actions";
 
 const CreateMovie = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { genres, loading, error } = useSelector((state) => state.movies);
+  const { genres, productionSeries, loading, error } = useSelector(
+    (state) => state.movies
+  );
   const [notification, setNotification] = useState({ message: "", type: "" }); // Add notification state
+  const [selectedProductionSeries, setSelectedProductionSeries] =
+    useState(null);
 
   const [form, setForm] = useState({
     title: "",
@@ -24,12 +32,14 @@ const CreateMovie = () => {
     genres: [],
     year: "",
     image: null,
+    productionSeries: null,
   });
 
   const [selectedGenres, setSelectedGenres] = useState([]);
 
   useEffect(() => {
     dispatch(fetchGenres());
+    dispatch(fetchProductionSeries()); // Add this line
   }, [dispatch]);
 
   // Show error notification if there's an error from Redux state
@@ -89,10 +99,12 @@ const CreateMovie = () => {
       !form.description ||
       !form.year ||
       !form.image ||
-      form.genres.length === 0
+      form.genres.length === 0 ||
+      !form.productionSeries // Add validation for productionSeries
     ) {
       setNotification({
-        message: "Please fill in all required fields",
+        message:
+          "Please fill in all required fields including genres and production series",
         type: "error",
       });
       return;
@@ -104,6 +116,7 @@ const CreateMovie = () => {
     formData.append("year", form.year);
     formData.append("image", form.image);
     formData.append("genres", JSON.stringify(form.genres));
+    formData.append("productionSeries", form.productionSeries); // Add productionSeries as string
 
     try {
       const response = await dispatch(addMovie(formData));
@@ -240,6 +253,47 @@ const CreateMovie = () => {
                   accept="image/*"
                   onChange={handleChange}
                 />
+              </div>
+
+              {/* Add Production Series Dropdown */}
+              <div>
+                <Label htmlFor="productionSeries" textColor="text-white">
+                  Production Series
+                </Label>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="flex items-center justify-between w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg">
+                    <div className="truncate max-w-[200px]">
+                      {selectedProductionSeries?.name ||
+                        "Select Production Series"}
+                    </div>
+                    <ChevronDown className="ml-1 h-4 w-4 flex-shrink-0" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    {productionSeries.map((series) => (
+                      <DropdownMenuCheckboxItem
+                        key={series._id}
+                        checked={selectedProductionSeries?._id === series._id}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedProductionSeries(series);
+                            setForm((prev) => ({
+                              ...prev,
+                              productionSeries: series._id, // Just store the ID
+                            }));
+                          } else {
+                            setSelectedProductionSeries(null);
+                            setForm((prev) => ({
+                              ...prev,
+                              productionSeries: null,
+                            }));
+                          }
+                        }}
+                      >
+                        {series.name}
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
 
               <div className="flex justify-end gap-4 pt-4">

@@ -10,6 +10,7 @@ const MovieItem = ({
   description,
   genres, // Changed from genre to genres
   year,
+  productionSeries, // Add this prop
   margin = "m-2",
   width = "w-72",
   height = "h-auto",
@@ -72,6 +73,16 @@ const MovieItem = ({
               </span>
             ))}
           </div>
+
+          {/* Add Production Series */}
+          {productionSeries && (
+            <div className="flex flex-wrap text-xs font-semibold text-white text-opacity-80 mt-2">
+              <span className="bg-purple-900 border border-purple-700 rounded-2xl px-3 py-1">
+                {productionSeries.name}
+              </span>
+            </div>
+          )}
+
           <div className="flex flex-wrap text-sm text-white mt-2">
             <span>{year}</span>
           </div>
@@ -105,6 +116,10 @@ MovieItem.propTypes = {
     })
   ).isRequired,
   year: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  productionSeries: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }),
   margin: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string,
