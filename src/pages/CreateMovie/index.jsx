@@ -112,7 +112,7 @@ const CreateMovie = () => {
         type: "success",
       });
       setTimeout(() => {
-        navigate("/");
+        navigate("/home");
       }, 1500);
     } catch (error) {
       setNotification({

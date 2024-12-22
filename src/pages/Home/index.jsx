@@ -69,9 +69,9 @@ const Home = () => {
               <MovieItem
                 id={movie._id}
                 title={movie.title}
-                imageUrl={`http://localhost:4000/${movie.image}`}
+                imageUrl={movie.image} // Remove concatenation with base URL
                 description={movie.description}
-                genres={movie.genres} // Changed from genre to genres
+                genres={movie.genres}
                 year={movie.year}
                 margin="m-2"
                 width="w-72"

@@ -5,9 +5,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { fetchGenres } from "../../../config/redux/actions";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const { genres } = useSelector((state) => state.movies);
+
+  useEffect(() => {
+    dispatch(fetchGenres());
+  }, [dispatch]);
+
   return (
     <header
       className="bg-white/15
@@ -39,31 +49,16 @@ const Navbar = () => {
               Genres <ChevronDown className="ml-1 h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>
-                <Link to="/genre/action" className="w-full">
-                  Action
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/genre/comedy" className="w-full">
-                  Comedy
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/genre/drama" className="w-full">
-                  Drama
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/genre/horror" className="w-full">
-                  Horror
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/genre/romance" className="w-full">
-                  Romance
-                </Link>
-              </DropdownMenuItem>
+              {genres.map((genre) => (
+                <DropdownMenuItem key={genre._id}>
+                  <Link
+                    to={`/genre/${genre.name.toLowerCase()}`}
+                    className="w-full"
+                  >
+                    {genre.name}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
 

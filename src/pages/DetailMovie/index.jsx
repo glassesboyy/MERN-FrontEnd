@@ -19,7 +19,7 @@ const DetailMovie = () => {
     if (window.confirm("Are you sure you want to delete this movie?")) {
       try {
         await dispatch(deleteMovie(id));
-        navigate("/"); // Redirect to home after delete
+        navigate("/");
       } catch (error) {
         console.error("Failed to delete movie:", error);
       }
@@ -53,7 +53,7 @@ const DetailMovie = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="mx-12 justify-items-end">
             <img
-              src={`http://localhost:4000/${currentMovie.image}`}
+              src={currentMovie.image} // Remove concatenation with base URL
               alt={currentMovie.title}
               className="w-1/2 h-auto object-cover rounded-lg shadow-lg"
             />

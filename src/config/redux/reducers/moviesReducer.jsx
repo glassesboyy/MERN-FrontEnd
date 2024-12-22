@@ -6,7 +6,7 @@ const initialState = {
   limit: 8,
   loading: false,
   error: null,
-  genres: [], // Add this new state
+  genres: [],
 };
 
 const moviesReducer = (state = initialState, action) => {
