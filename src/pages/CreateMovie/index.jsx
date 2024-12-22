@@ -4,12 +4,14 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Button, Input, Label, Upload } from "../../components";
+import { Button, Label, Upload } from "../../components";
 import {
   addMovie,
   fetchGenres,
@@ -178,9 +180,11 @@ const CreateMovie = () => {
                 <Input
                   type="text"
                   name="title"
+                  id="title"
                   placeholder="Enter movie title"
                   value={form.title}
                   onChange={handleChange}
+                  className="bg-white/10 text-white border-white/20"
                 />
               </div>
 
@@ -188,12 +192,13 @@ const CreateMovie = () => {
                 <Label htmlFor="description" textColor="text-white">
                   Description
                 </Label>
-                <Input
-                  type="textarea"
+                <Textarea
                   name="description"
+                  id="description"
                   placeholder="Enter movie description"
                   value={form.description}
                   onChange={handleChange}
+                  className="bg-white/10 text-white border-white/20 resize-none"
                 />
               </div>
 
@@ -237,9 +242,11 @@ const CreateMovie = () => {
                   <Input
                     type="number"
                     name="year"
+                    id="year"
                     placeholder="Enter movie year"
                     value={form.year}
                     onChange={handleChange}
+                    className="bg-white/10 text-white border-white/20"
                   />
                 </div>
               </div>
@@ -297,10 +304,18 @@ const CreateMovie = () => {
               </div>
 
               <div className="flex justify-end gap-4 pt-4">
-                <Button type="submit" variant="purple" width="w-full">
+                <Button
+                  type="submit"
+                  variant="purple"
+                  className="w-full bg-purple-600 hover:bg-purple-700"
+                >
                   Create Movie
                 </Button>
-                <Button to="/home" variant="glassmorphism" width="w-1/2">
+                <Button
+                  onClick={() => navigate("/home")}
+                  variant="glassmorphism"
+                  className="w-1/2"
+                >
                   Kembali
                 </Button>
               </div>

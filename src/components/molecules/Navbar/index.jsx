@@ -4,15 +4,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown, Search, Menu, X } from "lucide-react"; // Add these imports
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
   fetchAllMovies,
   fetchGenres,
-  setMovies,
   fetchProductionSeries,
+  setMovies,
 } from "../../../config/redux/actions";
 
 const Navbar = () => {
@@ -22,6 +22,11 @@ const Navbar = () => {
     (state) => state.movies
   );
   const [searchQuery, setSearchQuery] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   // Get unique years from ALL movies, not just filtered ones
   const availableYears = useMemo(() => {
@@ -78,129 +83,237 @@ const Navbar = () => {
   };
 
   return (
-    <header
-      className="bg-white/15
-        my-4
-        mx-32
-        sticky
-        top-0
-        z-50
-        backdrop-blur-lg
-        border border-white/40
-        hover:border-black/15
-        hover:bg-white/5
-        transition-all
-        duration-300
-        hover:shadow-lg
-        hover:shadow-purple-900 rounded-xl"
-    >
-      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-purple-700">
-          <Link to="home" className="hover:text-white transition duration-300">
-            MovieZul
-          </Link>
-        </h1>
-
-        {/* Search Bar */}
-        <form onSubmit={handleSearch} className="flex-1 max-w-md mx-6">
-          <div className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search movies..."
-              className="w-full px-4 py-2 bg-white/10 border border-white/40 rounded-lg
-                       text-white placeholder-white/50 focus:outline-none focus:border-purple-500
-                       transition duration-300"
-            />
-            <button
-              type="submit"
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-white/50 hover:text-purple-500
-                         transition duration-300"
+    <header className="bg-white/15 my-4 mx-4 lg:mx-32 sticky top-0 z-50 backdrop-blur-lg border border-white/40 hover:border-black/15 hover:bg-white/5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-900 rounded-xl">
+      <div className="container mx-auto px-4 lg:px-6 py-4">
+        <div className="flex justify-between items-center">
+          {/* Logo */}
+          <h1 className="text-2xl lg:text-3xl font-bold text-purple-700">
+            <Link
+              to="home"
+              className="hover:text-white transition duration-300"
             >
-              <Search size={20} />
-            </button>
-          </div>
-        </form>
+              MovieZul
+            </Link>
+          </h1>
 
-        {/* Center dropdowns */}
-        <div className="flex gap-6">
-          <Link
-            to="about"
-            className="hover:text-purple-300 hover:underline transition duration-300"
+          {/* Mobile menu button */}
+          <button
+            onClick={toggleMenu}
+            className="lg:hidden text-white hover:text-purple-500 transition-colors"
           >
-            About
-          </Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center hover:text-purple-300 transition duration-300">
-              Genres <ChevronDown className="ml-1 h-4 w-4" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {availableGenres.map((genre) => (
-                <DropdownMenuItem
-                  key={genre._id}
-                  onClick={() => handleGenreClick(genre._id)}
-                >
-                  {genre.name}
-                </DropdownMenuItem>
-              ))}
-              <DropdownMenuItem onClick={() => handleGenreClick(null)}>
-                All Movies
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center hover:text-purple-300 transition duration-300">
-              Years <ChevronDown className="ml-1 h-4 w-4" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {availableYears.map((year) => (
-                <DropdownMenuItem
-                  key={year}
-                  onClick={() => handleYearClick(year)}
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center justify-between flex-1 ml-6">
+            {/* Search Bar */}
+            <form onSubmit={handleSearch} className="flex-1 max-w-md">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search movies..."
+                  className="w-full px-4 py-2 bg-white/10 border border-white/40 rounded-lg text-white placeholder-white/30 focus:placeholder-white/70 focus:outline-none transition duration-300"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-white/50 hover:text-purple-500 transition duration-300"
                 >
-                  {year}
-                </DropdownMenuItem>
-              ))}
-              <DropdownMenuItem onClick={() => handleYearClick(null)}>
-                All Years
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  <Search size={20} />
+                </button>
+              </div>
+            </form>
 
-          {/* Add Production Series Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center hover:text-purple-300 transition duration-300">
-              Production Series <ChevronDown className="ml-1 h-4 w-4" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {availableProductionSeries.map((series) => (
-                <DropdownMenuItem
-                  key={series._id}
-                  onClick={() => handleProductionSeriesClick(series._id)}
-                >
-                  {series.name}
-                </DropdownMenuItem>
-              ))}
-              <DropdownMenuItem
-                onClick={() => handleProductionSeriesClick(null)}
+            {/* Desktop Menu Items */}
+            <div className="flex items-center gap-6 ml-6">
+              <Link
+                to="about"
+                className="hover:text-purple-300 hover:underline transition duration-300"
               >
-                All Series
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                About
+              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center hover:text-purple-300 transition duration-300">
+                  Genres <ChevronDown className="ml-1 h-4 w-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {availableGenres.map((genre) => (
+                    <DropdownMenuItem
+                      key={genre._id}
+                      onClick={() => handleGenreClick(genre._id)}
+                    >
+                      {genre.name}
+                    </DropdownMenuItem>
+                  ))}
+                  <DropdownMenuItem onClick={() => handleGenreClick(null)}>
+                    All Movies
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center hover:text-purple-300 transition duration-300">
+                  Years <ChevronDown className="ml-1 h-4 w-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {availableYears.map((year) => (
+                    <DropdownMenuItem
+                      key={year}
+                      onClick={() => handleYearClick(year)}
+                    >
+                      {year}
+                    </DropdownMenuItem>
+                  ))}
+                  <DropdownMenuItem onClick={() => handleYearClick(null)}>
+                    All Years
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center hover:text-purple-300 transition duration-300">
+                  Production Series <ChevronDown className="ml-1 h-4 w-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {availableProductionSeries.map((series) => (
+                    <DropdownMenuItem
+                      key={series._id}
+                      onClick={() => handleProductionSeriesClick(series._id)}
+                    >
+                      {series.name}
+                    </DropdownMenuItem>
+                  ))}
+                  <DropdownMenuItem
+                    onClick={() => handleProductionSeriesClick(null)}
+                  >
+                    All Series
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            {/* Logout Button */}
+            <nav className="ml-6">
+              <Link
+                to="login"
+                className="text-red-600 font-semibold hover:underline hover:text-red-900 transition duration-300"
+              >
+                Logout
+              </Link>
+            </nav>
+          </div>
         </div>
 
-        {/* Right-aligned login link */}
-        <nav>
-          <Link
-            to="login"
-            className="hover:text-purple-300 hover:underline transition duration-300"
-          >
-            Logout
-          </Link>
-        </nav>
+        {/* Mobile Navigation */}
+        <div
+          className={`lg:hidden ${
+            isMenuOpen ? "block" : "hidden"
+          } pt-4 pb-2 space-y-4`}
+        >
+          {/* Mobile Search */}
+          <form onSubmit={handleSearch} className="mb-4">
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search movies..."
+                className="w-full px-4 py-2 bg-white/10 border border-white/40 rounded-lg text-white placeholder-white/30 focus:placeholder-white/70 focus:outline-none transition duration-300"
+              />
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-white/50 hover:text-purple-500 transition duration-300"
+              >
+                <Search size={20} />
+              </button>
+            </div>
+          </form>
+
+          {/* Mobile Menu Items */}
+          <div className="flex flex-col space-y-3">
+            <Link
+              to="about"
+              className="text-white hover:text-purple-300 hover:underline transition duration-300 px-2"
+            >
+              About
+            </Link>
+
+            {/* Mobile Dropdowns */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="w-full text-left px-2 py-1 hover:text-purple-300 transition duration-300">
+                <span className="flex items-center">
+                  Genres <ChevronDown className="ml-1 h-4 w-4" />
+                </span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                {availableGenres.map((genre) => (
+                  <DropdownMenuItem
+                    key={genre._id}
+                    onClick={() => handleGenreClick(genre._id)}
+                  >
+                    {genre.name}
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuItem onClick={() => handleGenreClick(null)}>
+                  All Movies
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger className="w-full text-left px-2 py-1 hover:text-purple-300 transition duration-300">
+                <span className="flex items-center">
+                  Years <ChevronDown className="ml-1 h-4 w-4" />
+                </span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                {availableYears.map((year) => (
+                  <DropdownMenuItem
+                    key={year}
+                    onClick={() => handleYearClick(year)}
+                  >
+                    {year}
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuItem onClick={() => handleYearClick(null)}>
+                  All Years
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger className="w-full text-left px-2 py-1 hover:text-purple-300 transition duration-300">
+                <span className="flex items-center">
+                  Production Series <ChevronDown className="ml-1 h-4 w-4" />
+                </span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                {availableProductionSeries.map((series) => (
+                  <DropdownMenuItem
+                    key={series._id}
+                    onClick={() => handleProductionSeriesClick(series._id)}
+                  >
+                    {series.name}
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuItem
+                  onClick={() => handleProductionSeriesClick(null)}
+                >
+                  All Series
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Mobile Logout */}
+            <Link
+              to="login"
+              className="text-red-600 font-semibold hover:underline hover:text-red-900 transition duration-300 px-2"
+            >
+              Logout
+            </Link>
+          </div>
+        </div>
       </div>
     </header>
   );

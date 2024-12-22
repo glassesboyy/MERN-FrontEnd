@@ -1,5 +1,3 @@
-import React from "react";
-
 const Upload = ({
   name,
   accept = "*",
@@ -14,7 +12,9 @@ const Upload = ({
         name={name}
         id={name}
         accept={accept}
-        className={`border p-2 rounded-md w-full text-black bg-white`}
+        className={`p-2 rounded-md w-full text-white bg-white/10
+      backdrop-blur-lg
+      border border-white/40`}
         {...props}
       />
     </div>
