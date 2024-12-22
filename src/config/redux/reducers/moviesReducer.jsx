@@ -1,12 +1,17 @@
 const initialState = {
   movies: [],
   currentMovie: null,
+  totalItems: 0,
   totalPages: 1,
   currentPage: 1,
   limit: 8,
   loading: false,
   error: null,
   genres: [],
+  selectedGenre: null,
+  searchQuery: "",
+  selectedYear: null,
+  allMovies: [], // Add this new state
 };
 
 const moviesReducer = (state = initialState, action) => {
@@ -27,9 +32,13 @@ const moviesReducer = (state = initialState, action) => {
       return {
         ...state,
         movies: action.payload.movies,
+        totalItems: action.payload.totalItems,
         totalPages: action.payload.totalPages,
         currentPage: action.payload.currentPage,
         limit: action.payload.limit,
+        selectedGenre: action.payload.selectedGenre,
+        searchQuery: action.payload.searchQuery || "",
+        selectedYear: action.payload.selectedYear,
         loading: false,
         error: null,
       };
@@ -63,6 +72,11 @@ const moviesReducer = (state = initialState, action) => {
         genres: action.payload,
         loading: false,
         error: null,
+      };
+    case "SET_ALL_MOVIES":
+      return {
+        ...state,
+        allMovies: action.payload,
       };
     default:
       return state;

@@ -7,24 +7,31 @@ import { setMovies } from "../../config/redux/actions";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { movies, totalPages, currentPage, limit, loading, error } =
-    useSelector((state) => state.movies);
+  const {
+    movies,
+    totalPages,
+    currentPage,
+    loading,
+    error,
+    selectedGenre,
+    selectedYear,
+  } = useSelector((state) => state.movies);
 
   useEffect(() => {
-    dispatch(setMovies(currentPage));
-  }, [dispatch, currentPage]);
+    dispatch(setMovies(1, selectedGenre, "", selectedYear));
+  }, []); // Initial load
 
   const memoizedMovies = useMemo(() => movies, [movies]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      dispatch(setMovies(currentPage + 1));
+      dispatch(setMovies(currentPage + 1, selectedGenre, "", selectedYear));
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      dispatch(setMovies(currentPage - 1));
+      dispatch(setMovies(currentPage - 1, selectedGenre, "", selectedYear));
     }
   };
 
@@ -69,7 +76,7 @@ const Home = () => {
               <MovieItem
                 id={movie._id}
                 title={movie.title}
-                imageUrl={movie.image} // Remove concatenation with base URL
+                imageUrl={movie.image}
                 description={movie.description}
                 genres={movie.genres}
                 year={movie.year}
@@ -82,13 +89,23 @@ const Home = () => {
         </div>
 
         <div className="w-full flex justify-center items-center gap-4 mt-4">
-          <Button variant="glassmorphism" width="w-32" onClick={handlePrevPage}>
+          <Button
+            variant="glassmorphism"
+            width="w-32"
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+          >
             Previous
           </Button>
           <span className="text-xs font-semibold md:text-lg text-white">
             Page {currentPage} of {totalPages}
           </span>
-          <Button variant="glassmorphism" width="w-32" onClick={handleNextPage}>
+          <Button
+            variant="glassmorphism"
+            width="w-32"
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
             Next
           </Button>
         </div>

@@ -1,22 +1,35 @@
 import Axios from "axios";
 
 // Action to set movies (Read)
-export const setMovies = (page) => {
+export const setMovies = (page = 1, genre = null, search = "", year = null) => {
   return async (dispatch) => {
     try {
       dispatch({ type: "SET_LOADING" });
-      const result = await Axios.get(
-        `http://localhost:4000/v1/movie/posts?page=${page}&limit=8`
-      );
+      let url = `http://localhost:4000/v1/movie/posts?page=${page}&limit=8`;
+
+      if (genre) {
+        url += `&genre=${genre}`;
+      }
+      if (search) {
+        url += `&search=${search}`;
+      }
+      if (year) {
+        url += `&year=${year}`;
+      }
+
+      const result = await Axios.get(url);
       const responseAPI = result.data;
       dispatch({
         type: "SET_MOVIES",
         payload: {
           movies: responseAPI.data,
-          totalItems: responseAPI.total_items,
-          totalPages: responseAPI.total_pages,
-          currentPage: responseAPI.current_page,
-          limit: responseAPI.limit,
+          totalItems: responseAPI.pagination.total_items,
+          totalPages: responseAPI.pagination.total_pages,
+          currentPage: responseAPI.pagination.current_page,
+          limit: responseAPI.pagination.limit,
+          selectedGenre: genre,
+          searchQuery: search,
+          selectedYear: year,
         },
       });
     } catch (error) {
@@ -24,7 +37,7 @@ export const setMovies = (page) => {
         type: "SET_ERROR",
         payload:
           error.response?.data?.message ||
-          "Error cik, Aktifin BackEnd nya dulu sayangg",
+          "Error: Please check if the backend is running",
       });
     }
   };
@@ -96,18 +109,18 @@ export const deleteMovie = (id) => {
   return async (dispatch) => {
     try {
       dispatch({ type: "SET_LOADING" });
-      await Axios.delete(`http://localhost:4000/v1/movie/post/${id}`); // Changed from posts to post
+      await Axios.delete(`http://localhost:4000/v1/movie/post/${id}`);
       dispatch({
         type: "DELETE_MOVIE",
         payload: id,
       });
-      return Promise.resolve(); // Add this to properly handle the async operation
+      return Promise.resolve();
     } catch (error) {
       dispatch({
         type: "SET_ERROR",
         payload: error.response?.data?.message || "Failed to delete movie",
       });
-      return Promise.reject(error); // Add this to properly handle errors
+      return Promise.reject(error);
     }
   };
 };
@@ -118,14 +131,14 @@ export const getMovieById = (id) => {
     try {
       dispatch({ type: "SET_LOADING" });
       const result = await Axios.get(
-        `http://localhost:4000/v1/movie/post/${id}` // Changed from posts to post
+        `http://localhost:4000/v1/movie/post/${id}`
       );
       dispatch({
         type: "SET_CURRENT_MOVIE",
         payload: result.data.data,
       });
     } catch (error) {
-      console.error("Error fetching movie:", error); // Add this for debugging
+      console.error("Error fetching movie:", error);
       dispatch({
         type: "SET_ERROR",
         payload:
@@ -150,6 +163,23 @@ export const fetchGenres = () => {
         type: "SET_ERROR",
         payload: error.response?.data?.message || "Failed to fetch genres",
       });
+    }
+  };
+};
+
+// Add this new action
+export const fetchAllMovies = () => {
+  return async (dispatch) => {
+    try {
+      const result = await Axios.get(
+        `http://localhost:4000/v1/movie/posts?limit=1000`
+      );
+      dispatch({
+        type: "SET_ALL_MOVIES",
+        payload: result.data.data,
+      });
+    } catch (error) {
+      console.error("Error fetching all movies:", error);
     }
   };
 };
