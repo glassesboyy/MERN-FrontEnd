@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom"; // Add useNavigate
-import { deleteMovie, getMovieById } from "../../config/redux/actions";
-import { Button } from "../../components/atoms"; // Add Button import
+import { useNavigate, useParams } from "react-router-dom";
+import { deleteMovie, getMovieById } from "../../../config/redux/actions";
+import { Button } from "../../../components/atoms";
 
 const DetailMovie = () => {
   const { id } = useParams();

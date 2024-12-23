@@ -1,9 +1,9 @@
-import React from "react";
+import About from "./About";
+import CreateMovie from "./CreateMovie";
+import DetailMovie from "./DetailMovie";
+import Home from "./Home";
 import { Outlet } from "react-router-dom";
 import { Footer, Navbar } from "../../components";
-import CreateMovie from "../CreateMovie";
-import DetailMovie from "../DetailMovie";
-import Home from "../Home";
 
 const MainApp = () => {
   return (
@@ -22,5 +22,6 @@ const MainApp = () => {
 MainApp.Home = Home;
 MainApp.CreateMovie = CreateMovie;
 MainApp.DetailMovie = DetailMovie;
+MainApp.About = About;
 
 export default MainApp;

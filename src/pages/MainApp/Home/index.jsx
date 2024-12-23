@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, MovieItem } from "../../components";
-import { HeaderHome } from "../../components/templates";
-import { setMovies } from "../../config/redux/actions";
+import { Button, MovieItem } from "../../../components";
+import { HeaderHome } from "../../../components/templates";
+import { setMovies } from "../../../config/redux/actions";
 
 const Home = () => {
   const dispatch = useDispatch();

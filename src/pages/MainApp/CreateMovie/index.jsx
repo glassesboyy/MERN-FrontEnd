@@ -11,12 +11,12 @@ import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Button, Label, Upload } from "../../components";
+import { Button, Label, Upload } from "../../../components";
 import {
   addMovie,
   fetchGenres,
   fetchProductionSeries,
-} from "../../config/redux/actions";
+} from "../../../config/redux/actions";
 
 const CreateMovie = () => {
   const dispatch = useDispatch();
