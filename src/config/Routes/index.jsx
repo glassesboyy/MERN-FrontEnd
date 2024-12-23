@@ -1,5 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { Login, MainApp, Register } from "../../pages";
+import { Login, MainApp, Register, Admin } from "../../pages";
 
 const AppRoutes = () => {
   return (
@@ -12,6 +12,10 @@ const AppRoutes = () => {
           <Route path="genre/:genreType" element={<MainApp.Home />} />
           <Route path="year/:year" element={<MainApp.Home />} />
           <Route path="about" element={<MainApp.About />} />
+        </Route>
+        <Route path="/admin" element={<Admin />}>
+          <Route path="dashboard" element={<Admin />} />
+          <Route path="settings" element={<Admin />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
