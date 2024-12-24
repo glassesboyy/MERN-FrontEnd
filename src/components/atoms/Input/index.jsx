@@ -13,7 +13,7 @@ const Input = ({
       type={type}
       name={name}
       placeholder={placeholder}
-      className={`border p-2 rounded-md w-full ${margin} ${textSize} text-black bg-white`}
+      className={`border p-2 border-white/50 rounded-md w-full ${margin} ${textSize} text-white bg-white/10`}
       {...props}
     />
   );
