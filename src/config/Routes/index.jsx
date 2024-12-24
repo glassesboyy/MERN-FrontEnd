@@ -2,6 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Admin, Login, MainApp, Register } from "../../pages";
 import GenreList from "../../pages/Admin/Genre";
 import MovieList from "../../pages/Admin/Movie";
+import CreateMovie from "../../pages/Admin/Movie/createMovie"; // Add this import
 import ProductionSeriesList from "../../pages/Admin/ProductionSeries";
 import UserList from "../../pages/Admin/User";
 
@@ -20,6 +21,7 @@ const AppRoutes = () => {
         <Route path="/admin" element={<Admin />}>
           <Route path="dashboard" element={<Admin />} />
           <Route path="movies" element={<MovieList />} />
+          <Route path="movies/create" element={<CreateMovie />} />
           <Route path="genres" element={<GenreList />} />
           <Route path="production-series" element={<ProductionSeriesList />} />
           <Route path="users" element={<UserList />} />

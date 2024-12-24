@@ -27,6 +27,7 @@ export const setMovies = (
       }
 
       const result = await Axios.get(url);
+      console.log("API Response:", result.data); // Tambahkan log ini
       const responseAPI = result.data;
 
       dispatch({

@@ -1,4 +1,3 @@
-import { Outlet, useLocation } from "react-router-dom";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
@@ -14,6 +13,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { Outlet, useLocation } from "react-router-dom";
 
 const Admin = () => {
   const location = useLocation();
