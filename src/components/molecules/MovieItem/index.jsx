@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteMovie, setMovies } from "../../../config/redux/actions";
 import { Button } from "../../atoms";
 
 const MovieItem = ({
@@ -18,17 +17,6 @@ const MovieItem = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to delete this movie?")) {
-      try {
-        await dispatch(deleteMovie(id));
-        dispatch(setMovies(1)); // Refresh the movie list
-      } catch (error) {
-        console.error("Failed to delete movie:", error);
-      }
-    }
-  };
 
   return (
     <div
@@ -95,8 +83,8 @@ const MovieItem = ({
             >
               Detail
             </Button>
-            <Button variant="red" width="w-32" onClick={handleDelete}>
-              Delete
+            <Button variant="red" width="w-32">
+              Watch
             </Button>
           </div>
         </div>

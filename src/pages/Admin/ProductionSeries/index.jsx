@@ -7,32 +7,44 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+
+import { useNavigate } from "react-router-dom";
+import { Button } from "../../../components";
 
 const ProductionSeriesList = () => {
   return (
-    <div className="border container mx-auto pb-4 rounded-lg">
-      <Table>
+    <div className="border bg-black border-gray-700 container mx-auto pb-4 rounded-lg">
+      <div className="flex justify-center">
         <TableCaption>List of Production Series</TableCaption>
+      </div>
+      <div className="flex justify-end">
+        <Button
+          variant="glassmorphism"
+          className="text-white"
+          margin="mr-4 my-4"
+          width="w-1/5"
+        >
+          Create Production Series
+        </Button>
+      </div>
+      <Table className="text-gray-200">
         <TableHeader>
           <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Genre</TableHead>
-            <TableHead>Seasons</TableHead>
-            <TableHead>Episodes</TableHead>
+            <TableHead>Production Series</TableHead>
+            <TableHead>Description</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {/* Map your production series data here */}
-          <TableRow>
+          <TableRow className="hover:bg-gray-700">
             <TableCell>Example Series</TableCell>
             <TableCell>Drama</TableCell>
-            <TableCell>2</TableCell>
-            <TableCell>24</TableCell>
             <TableCell className="space-x-2">
-              <Button size="sm">Edit</Button>
-              <Button variant="destructive" size="sm">
+              <Button variant="blue" size="sm" width="w-1/4">
+                Edit
+              </Button>
+              <Button variant="red" size="sm" width="w-1/4">
                 Delete
               </Button>
             </TableCell>

@@ -32,8 +32,8 @@ const Admin = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b">
+      <SidebarInset className="bg-gray-900 text-white">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-gray-700 bg-black">
           <div className="flex items-center gap-2 px-3">
             <SidebarTrigger />
             <Separator orientation="vertical" className="mr-2 h-4" />
@@ -50,7 +50,7 @@ const Admin = () => {
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex-1 p-4">
+        <div className="flex-1 p-4 bg-black">
           <Outlet />
         </div>
       </SidebarInset>

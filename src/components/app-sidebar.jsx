@@ -52,8 +52,10 @@ export function AppSidebar({ ...props }) {
             <SidebarMenuButton size="xl" asChild>
               <Link to="/admin">
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="text-3xl font-extrabold">MovieZul</span>
-                  <span className="">Admin Dashboard</span>
+                  <span className="text-3xl font-extrabold bg-gradient-to-r from-purple-500 to-purple-300 bg-clip-text text-transparent">
+                    MovieZul
+                  </span>
+                  <span>Admin Dashboard</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -66,9 +68,7 @@ export function AppSidebar({ ...props }) {
             {data.navMain.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild>
-                  <Link to={item.url} className="font-medium">
-                    {item.title}
-                  </Link>
+                  <Link to={item.url}>{item.title}</Link>
                 </SidebarMenuButton>
                 {item.items?.length ? (
                   <SidebarMenuSub>

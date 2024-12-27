@@ -1,5 +1,5 @@
+import ManOfSteel from "../../../assets/image/Man of Steel.png";
 import { Upload } from "@/components";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -18,6 +18,7 @@ import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../../../components";
 
 const CreateMovie = () => {
   const dispatch = useDispatch();
@@ -133,32 +134,18 @@ const CreateMovie = () => {
     }
   };
   return (
-    <div className="p-6">
-      <div className="max-w-2xl mx-auto bg-black/20 backdrop-blur-lg rounded-3xl shadow-xl p-8">
-        <h2 className="text-2xl font-bold text-white mb-6">Create New Movie</h2>
-
-        {notification.message && (
-          <div
-            className={`p-2 ${
-              notification.type === "success" ? "bg-indigo-800" : "bg-red-800"
-            } items-center text-indigo-100 leading-none rounded-full flex mb-6`}
-            role="alert"
-          >
-            <span
-              className={`flex rounded-full ${
-                notification.type === "success" ? "bg-indigo-500" : "bg-red-500"
-              } uppercase px-2 py-1 text-xs font-bold mr-3`}
-            >
-              {notification.type === "success" ? "Success" : "Error"}
-            </span>
-            <span className="font-semibold mr-2 text-left flex-auto">
-              {notification.message}
-            </span>
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
+    <div className="flex justify-center items-center min-h-screen bg-black p-4">
+      <div className="flex flex-col md:flex-row border-2 border-black/10 w-full max-w-6xl bg-black shadow-2xl shadow-purple-900 rounded-xl overflow-hidden">
+        <img
+          src={ManOfSteel}
+          alt="Movie creation background"
+          className="hidden md:block w-1/3 aspect-square object-cover"
+        />
+        <div className="w-full md:w-1/ p-8">
+          <h2 className="text-3xl font-bold text-center text-white mb-6">
+            Create New Movie
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="title" textColor="text-white">
                 Title
@@ -289,18 +276,42 @@ const CreateMovie = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="flex justify-end gap-4 mt-6">
-            <Button variant="outline" onClick={() => navigate("/admin/movies")}>
-              Cancel
-            </Button>
-            <Button type="submit" className="bg-purple-600 hover:bg-purple-700">
-              Create Movie
-            </Button>
-          </div>
-        </form>
+            {notification.message && (
+              <div
+                className={`p-2 ${
+                  notification.type === "success"
+                    ? "bg-indigo-800"
+                    : "bg-red-800"
+                } items-center text-xs text-indigo-100 leading-none rounded-full flex my-6 mx-2`}
+                role="alert"
+              >
+                <span
+                  className={`flex rounded-full ${
+                    notification.type === "success"
+                      ? "bg-indigo-500"
+                      : "bg-red-500"
+                  } uppercase px-2 py-1 text-xs font-bold mr-3`}
+                >
+                  {notification.type === "success" ? "Success" : "Error"}
+                </span>
+                <span className="font-semibold mr-2 text-left flex-auto">
+                  {notification.message}
+                </span>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-4 mt-6">
+              <Button variant="red" onClick={() => navigate("/admin/movies")}>
+                Cancel
+              </Button>
+              <Button type="submit" variant="glassmorphism">
+                Create Movie
+              </Button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

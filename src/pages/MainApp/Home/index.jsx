@@ -53,62 +53,49 @@ const Home = () => {
         <HeaderHome />
       </motion.div>
 
-      <div className="flex flex-wrap justify-center mt-10">
-        <div className="w-full flex justify-end mb-4">
-          <Button
-            variant="glassmorphism"
-            to="/create-movie"
-            color="purple"
-            width="w-32"
+      <div className="flex flex-wrap justify-center">
+        {memoizedMovies.map((movie, index) => (
+          <motion.div
+            key={movie._id}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: index * 0.1 }}
           >
-            Create
-          </Button>
-        </div>
+            <MovieItem
+              id={movie._id}
+              title={movie.title}
+              imageUrl={movie.image}
+              description={movie.description}
+              genres={movie.genres}
+              year={movie.year}
+              margin="m-2"
+              width="w-72"
+              height="h-auto"
+            />
+          </motion.div>
+        ))}
+      </div>
 
-        <div className="flex flex-wrap justify-center">
-          {memoizedMovies.map((movie, index) => (
-            <motion.div
-              key={movie._id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-            >
-              <MovieItem
-                id={movie._id}
-                title={movie.title}
-                imageUrl={movie.image}
-                description={movie.description}
-                genres={movie.genres}
-                year={movie.year}
-                margin="m-2"
-                width="w-72"
-                height="h-auto"
-              />
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="w-full flex justify-center items-center gap-4 mt-4">
-          <Button
-            variant="glassmorphism"
-            width="w-32"
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </Button>
-          <span className="text-xs font-semibold md:text-lg text-white">
-            Page {currentPage} of {totalPages}
-          </span>
-          <Button
-            variant="glassmorphism"
-            width="w-32"
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </Button>
-        </div>
+      <div className="w-full flex justify-center items-center gap-4 mt-4">
+        <Button
+          variant="glassmorphism"
+          width="w-32"
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </Button>
+        <span className="text-xs font-semibold md:text-lg text-white">
+          Page {currentPage} of {totalPages}
+        </span>
+        <Button
+          variant="glassmorphism"
+          width="w-32"
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

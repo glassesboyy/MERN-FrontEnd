@@ -41,19 +41,24 @@ const MovieList = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="border container mx-auto pb-4 rounded-lg">
+    <div className="border bg-black border-gray-700 container mx-auto pb-4 rounded-lg">
       {/* Add Create Movie Button */}
-      <div className="flex justify-end p-4">
+      <div className="flex justify-center">
+        <TableCaption>List of Movies</TableCaption>
+      </div>
+      <div className="flex justify-end">
         <Button
           onClick={() => navigate("/admin/movies/create")}
           variant="glassmorphism"
+          className="text-white"
+          margin="mr-4 my-4"
+          width="w-1/6"
         >
           Create Movie
         </Button>
       </div>
 
-      <Table>
-        <TableCaption>List of Movies</TableCaption>
+      <Table className="text-gray-200">
         <TableHeader>
           <TableRow>
             <TableHead>Poster</TableHead>
@@ -67,7 +72,7 @@ const MovieList = () => {
         <TableBody>
           {movies &&
             movies.map((movie) => (
-              <TableRow key={movie._id}>
+              <TableRow key={movie._id} className=" hover:bg-gray-700">
                 <TableCell>
                   <img
                     src={movie.image}
@@ -78,7 +83,7 @@ const MovieList = () => {
                     }}
                   />
                 </TableCell>
-                <TableCell className="font-medium">{movie.title}</TableCell>
+                <TableCell className="font-semibold">{movie.title}</TableCell>
                 <TableCell>
                   {Array.isArray(movie.genres)
                     ? movie.genres.map((genre) => genre.name).join(", ")
@@ -86,11 +91,12 @@ const MovieList = () => {
                 </TableCell>
                 <TableCell>{movie.productionSeries?.name || "-"}</TableCell>
                 <TableCell>{movie.year}</TableCell>
-                <TableCell className="space-x-2">
+                <TableCell className="space-x-1">
                   <Button
                     variant="blue"
                     size="sm"
                     onClick={() => handleEdit(movie._id)}
+                    width="w-1/3"
                   >
                     Edit
                   </Button>
@@ -98,6 +104,7 @@ const MovieList = () => {
                     variant="red"
                     size="sm"
                     onClick={() => handleDelete(movie._id)}
+                    width="w-1/3"
                   >
                     Delete
                   </Button>

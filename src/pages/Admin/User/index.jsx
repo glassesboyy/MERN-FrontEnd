@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,12 +7,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "../../../components";
 
 const UserList = () => {
   return (
-    <div className="border container mx-auto pb-4 rounded-lg">
-      <Table>
+    <div className="border bg-black border-gray-700 container mx-auto pb-4 rounded-lg">
+      <div className="flex justify-center">
         <TableCaption>List of Users</TableCaption>
+      </div>
+      <div className="flex justify-end">
+        <Button
+          variant="glassmorphism"
+          className="text-white"
+          margin="mr-4 my-4"
+          width="w-1/6"
+        >
+          Create User
+        </Button>
+      </div>
+      <Table className="text-gray-200">
         <TableHeader>
           <TableRow>
             <TableHead>Username</TableHead>
@@ -25,14 +37,13 @@ const UserList = () => {
         </TableHeader>
         <TableBody>
           {/* Map your user data here */}
-          <TableRow>
+          <TableRow className="hover:bg-gray-700">
             <TableCell>johndoe</TableCell>
             <TableCell>john@example.com</TableCell>
             <TableCell>User</TableCell>
             <TableCell>Active</TableCell>
-            <TableCell className="space-x-2">
-              <Button size="sm">Edit</Button>
-              <Button variant="destructive" size="sm">
+            <TableCell>
+              <Button variant="red" size="sm" width="w-1/2">
                 Delete
               </Button>
             </TableCell>

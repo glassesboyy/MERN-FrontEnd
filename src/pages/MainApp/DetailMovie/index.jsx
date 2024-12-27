@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { deleteMovie, getMovieById } from "../../../config/redux/actions";
 import { Button } from "../../../components/atoms";
+import { getMovieById } from "../../../config/redux/actions";
 
 const DetailMovie = () => {
   const { id } = useParams();
@@ -14,17 +14,6 @@ const DetailMovie = () => {
   useEffect(() => {
     dispatch(getMovieById(id));
   }, [dispatch, id]);
-
-  const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to delete this movie?")) {
-      try {
-        await dispatch(deleteMovie(id));
-        navigate("/");
-      } catch (error) {
-        console.error("Failed to delete movie:", error);
-      }
-    }
-  };
 
   const handleBack = () => {
     navigate(-1);
@@ -92,8 +81,8 @@ const DetailMovie = () => {
               <Button variant="glassmorphism" width="w-32" onClick={handleBack}>
                 Back
               </Button>
-              <Button variant="red" width="w-32" onClick={handleDelete}>
-                Delete
+              <Button variant="red" width="w-32">
+                Watch
               </Button>
             </div>
           </div>
